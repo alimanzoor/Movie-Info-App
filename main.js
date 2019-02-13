@@ -8,7 +8,7 @@ $(function () {
   if (movieText) {
     $('#textInput').focus();
     $('#textInput').val(movieText);
-    uProgress.start();
+    uProgress.options({doneDuration: 250}).start();
     getMovies(movieText);
   } else {
     const noData = '<div id="noData" class="text-center">No Data entered</div>';
@@ -17,7 +17,7 @@ $(function () {
 
   // onSubmit
   $('#inputSearch').on('submit', (e) => {
-    uProgress.start();
+    uProgress.options({doneDuration: 250}).start();
     let textInput = $('#textInput').val().trim();
     getMovies(textInput);
     sessionStorage.setItem('movieText', textInput);
@@ -74,7 +74,7 @@ let getSelectMovie = (id) => {
 };
 
 let getMovie = () => {
-  uProgress.start();
+  uProgress.options({doneDuration: 250}).start();
   uProgress.set(1000, 0.25);
   const parent = document.getElementById('movie');
   renderLoader(parent);
