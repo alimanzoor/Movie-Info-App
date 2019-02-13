@@ -3,3 +3,30 @@
   padding: 1rem 2rem 2rem;
 }
 
+.card .card-img-top {
+  height: 240px;
+}
+
+.thumbnail {
+  width: 100%;
+  margin: 0;
+}
+
+strong {
+  min-width: 130px;
+  display: inline-block;
+}
+
+.row.well {
+  padding-left: 0;
+  padding-right: 0;
+  display: flex;
+  align-items: center;
+}
+.list-group {
+  margin: 0;
+}
+
+h2 {
+  margin-top: 0;
+}
