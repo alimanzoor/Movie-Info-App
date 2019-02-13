@@ -1,7 +1,17 @@
 $(function () {
+  const movieText = sessionStorage.getItem('movieText');
+  if (movieText) {
+    $('#textInput').focus();
+    $('#textInput').val(movieText);
+    getMovies(movieText);
+  } else {
+    const noData = '<div id="noData" class="text-center">No Data entered</div>';
+    $('#movies').html(noData);
+  }
   $('#inputSearch').on('submit', (e) => {
-    let textInput = $('#textInput').val();
+    let textInput = $('#textInput').val().trim();
     getMovies(textInput);
+    sessionStorage.setItem('movieText', textInput);
     $('#inputSearch')[0].reset();
     e.preventDefault();
   });
@@ -104,10 +114,11 @@ let getMovie = () => {
 };
 
 let renderLoader = (parent) => {
+  $('#noData').remove();
   const loader = `
     <div class="loader">
       <img src="oval.svg" alt="loader">
     </div>
   `;
-  parent.insertAdjacentHTML('afterbegin', loader);
+  $(parent).html(loader);
 };
