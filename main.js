@@ -28,7 +28,7 @@ $(function () {
 
 let getMovies = (textInput) => {
   const key = 'e1c5befc';
-  const url = `http://www.omdbapi.com/?apikey=${key}`;
+  const url = `https://www.omdbapi.com/?apikey=${key}`;
 
 
   axios.get(url, {
@@ -80,7 +80,7 @@ let getMovie = () => {
   renderLoader(parent);
   const movieId = sessionStorage.getItem('movieId');
   const key = 'e1c5befc';
-  const url = `http://www.omdbapi.com/?apikey=${key}`;
+  const url = `https://www.omdbapi.com/?apikey=${key}`;
 
   setTimeout(() => {
     axios.get(url, {
