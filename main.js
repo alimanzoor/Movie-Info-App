@@ -1,14 +1,23 @@
+const uProgress = new UProgress();
+
 $(function () {
+
   const movieText = sessionStorage.getItem('movieText');
+
+  // if searchText is available
   if (movieText) {
     $('#textInput').focus();
     $('#textInput').val(movieText);
+    uProgress.start();
     getMovies(movieText);
   } else {
     const noData = '<div id="noData" class="text-center">No Data entered</div>';
     $('#movies').html(noData);
   }
+
+  // onSubmit
   $('#inputSearch').on('submit', (e) => {
+    uProgress.start();
     let textInput = $('#textInput').val().trim();
     getMovies(textInput);
     sessionStorage.setItem('movieText', textInput);
@@ -21,12 +30,14 @@ let getMovies = (textInput) => {
   const key = 'e1c5befc';
   const url = `http://www.omdbapi.com/?apikey=${key}`;
 
+
   axios.get(url, {
       params: {
         s: textInput
       }
     })
     .then(function (response) {
+      uProgress.set(1000, 0.25);
       const parent = document.getElementById('movies');
       renderLoader(parent);
       const movies = response.data.Search;
@@ -46,7 +57,9 @@ let getMovies = (textInput) => {
           `;
         });
 
+
         $('#movies').html(html);
+        uProgress.done();
       }, 1000);
     })
     .catch(function (error) {
@@ -61,6 +74,8 @@ let getSelectMovie = (id) => {
 };
 
 let getMovie = () => {
+  uProgress.start();
+  uProgress.set(1000, 0.25);
   const parent = document.getElementById('movie');
   renderLoader(parent);
   const movieId = sessionStorage.getItem('movieId');
@@ -106,6 +121,7 @@ let getMovie = () => {
           </div>
         `;
         $('#movie').html(html);
+        uProgress.done();
       })
       .catch(function (error) {
         console.log(error);
