@@ -1,14 +1,15 @@
 const uProgress = new UProgress();
 
 $(function () {
-
   const movieText = sessionStorage.getItem('movieText');
 
   // if searchText is available
   if (movieText) {
     $('#textInput').focus();
     $('#textInput').val(movieText);
-    uProgress.options({doneDuration: 250}).start();
+    uProgress.options({
+      doneDuration: 250
+    }).start();
     getMovies(movieText);
   } else {
     const noData = '<div id="noData" class="text-center">No Data entered</div>';
@@ -17,7 +18,9 @@ $(function () {
 
   // onSubmit
   $('#inputSearch').on('submit', (e) => {
-    uProgress.options({doneDuration: 250}).start();
+    uProgress.options({
+      doneDuration: 250
+    }).start();
     let textInput = $('#textInput').val().trim();
     getMovies(textInput);
     sessionStorage.setItem('movieText', textInput);
@@ -27,9 +30,11 @@ $(function () {
 });
 
 let getMovies = (textInput) => {
+  uProgress.options({
+    doneDuration: 250
+  }).start();
   const key = 'e1c5befc';
   const url = `https://www.omdbapi.com/?apikey=${key}`;
-
 
   axios.get(url, {
       params: {
@@ -37,9 +42,8 @@ let getMovies = (textInput) => {
       }
     })
     .then(function (response) {
-      uProgress.set(1000, 0.25);
-      const parent = document.getElementById('movies');
-      renderLoader(parent);
+
+      renderLoader();
       const movies = response.data.Search;
       setTimeout(() => {
         let html = '';
@@ -69,15 +73,34 @@ let getMovies = (textInput) => {
 
 let getSelectMovie = (id) => {
   sessionStorage.setItem('movieId', id);
-  window.location = 'movie.html';
+  $('#moviesContainer').hide();
+  $('#movieContainer').show();
+  getMovie();
+  return false;
+};
+
+let goBack = () => {
+  uProgress.options({
+    doneDuration: 250
+  }).start();
+
+  $('#movie').empty();
+  $('#movieContainer').hide();
+  renderLoader();
+  setTimeout(() => {
+    $('#moviesContainer').show();
+    uProgress.done();
+  }, 1000);
+
   return false;
 };
 
 let getMovie = () => {
-  uProgress.options({doneDuration: 250}).start();
-  uProgress.set(1000, 0.25);
-  const parent = document.getElementById('movie');
-  renderLoader(parent);
+  uProgress.options({
+    doneDuration: 250
+  }).start();
+
+  renderLoader();
   const movieId = sessionStorage.getItem('movieId');
   const key = 'e1c5befc';
   const url = `https://www.omdbapi.com/?apikey=${key}`;
@@ -116,7 +139,7 @@ let getMovie = () => {
               <p>${movie.Plot}</p>
 
               <a href="http://imdb.com/title/${movie.imdbID}" target="_blank" class="btn btn-primary">View IMDB</a>
-              <a href="index.html" class="btn btn-default">Go Back To Search</a>
+              <a href="#" onclick="goBack()" class="btn btn-default">Go Back To Search</a>
             </div>
           </div>
         `;
@@ -129,12 +152,7 @@ let getMovie = () => {
   }, 1000);
 };
 
-let renderLoader = (parent) => {
+let renderLoader = () => {
   $('#noData').remove();
-  const loader = `
-    <div class="loader">
-      <img src="oval.svg" alt="loader">
-    </div>
-  `;
-  $(parent).html(loader);
+  uProgress.set(1300, 0.5);
 };
